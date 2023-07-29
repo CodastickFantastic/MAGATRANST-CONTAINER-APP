@@ -14,22 +14,25 @@ services:
 
   # Inicjalizacja Next JS
   megatrans-app:
+    container_name: megatrans-app
     depends_on:
       - megatrans-mysql
     build:
       context: ./megatransfinal
     links:
       - megatrans-mysql
-
-    ports:
-      - 3000:3000
-      - 5555:5555
+    expose:
+      - 81
+      - 3000
+      - 5555
     restart: always
+    environment:
+      VIRTUAL_HOST: megatrans.online,www.megatrans.online
 
 volumes:
   megatrans-mysql:
 
 networks:
   default:
-    external:
-      name: nginx-proxy
+    name: nginx-proxy
+    external: true
