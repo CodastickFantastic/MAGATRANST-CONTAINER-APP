@@ -1,29 +1,35 @@
 services:
   # Inicjalizacja bazy danych
-  mysql:
-    container_name: mysql
-    ports:
-      - "3306:3306"
+  megatrans-mysql:
+    container_name: megatrans-mysql
     image: mysql:8.0
     restart: always
     environment:
+      MYSQL_ROOT_PASSWORD: megatrans
       MYSQL_DATABASE: megatrans
-      MYSQL_ROOT_PASSWORD: prisma
+      MYSQL_USER: megatrans
+      MYSQL_PASSWORD: megatrans
     volumes:
-      - mysql:/var/lib/mysql/megatrans
+      - megatrans-mysql:/var/lib/mysql
 
   # Inicjalizacja Next JS
   megatrans-app:
+    depends_on:
+      - megatrans-mysql
     build:
       context: ./megatransfinal
     links:
-      - mysql
-    depends_on:
-      - mysql
+      - megatrans-mysql
+
     ports:
       - 3000:3000
       - 5555:5555
     restart: always
 
 volumes:
-  mysql:
+  megatrans-mysql:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
