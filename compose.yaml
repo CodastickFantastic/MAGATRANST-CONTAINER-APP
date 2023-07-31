@@ -22,12 +22,14 @@ services:
     links:
       - megatrans-mysql
     expose:
-      - 81
-      - 3000
+      - 80
+      - 443
       - 5555
     restart: always
     environment:
       VIRTUAL_HOST: megatrans.online,www.megatrans.online
+      LETSENCRYPT_HOST: megatrans.online,www.megatrans.online
+      LETSENCRYPT_EMAIL: it.jakub.wojtysiak@gmail.com
 
 volumes:
   megatrans-mysql:
